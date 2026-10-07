@@ -1,7 +1,8 @@
+(function () {
 const SHANGHAI_OFFSET_MS = 8 * 60 * 60 * 1000;
 const PULSE_WIDTH = [0.1, 0.2, 0.3, 0.4];
 
-export function beijingParts(epochMs) {
+function beijingParts(epochMs) {
   const shifted = new Date(epochMs + SHANGHAI_OFFSET_MS);
   return {
     year: shifted.getUTCFullYear(),
@@ -14,7 +15,7 @@ export function beijingParts(epochMs) {
   };
 }
 
-export function epochMsFromBeijing(parts) {
+function epochMsFromBeijing(parts) {
   return Date.UTC(
     parts.year,
     parts.month - 1,
@@ -26,7 +27,7 @@ export function epochMsFromBeijing(parts) {
   );
 }
 
-export function weekdayMon1(year, month, day) {
+function weekdayMon1(year, month, day) {
   const jsDay = new Date(Date.UTC(year, month - 1, day)).getUTCDay();
   return jsDay === 0 ? 7 : jsDay;
 }
@@ -40,7 +41,7 @@ function xorSymbols(symbols) {
   return parity;
 }
 
-export function encodeFrame(parts) {
+function encodeFrame(parts) {
   const { year, month, day, hour, minute, second } = parts;
   if (second !== 0 && second !== 20 && second !== 40) {
     throw new Error(`帧起始秒必须是 0、20 或 40，收到 ${second}`);
@@ -75,7 +76,7 @@ export function encodeFrame(parts) {
   return symbols;
 }
 
-export function encodeMinute(parts) {
+function encodeMinute(parts) {
   const symbols = [];
   for (const second of [0, 20, 40]) {
     symbols.push(...encodeFrame({ ...parts, second }));
@@ -83,7 +84,7 @@ export function encodeMinute(parts) {
   return symbols;
 }
 
-export function decodeFrame(symbols, century = 2000) {
+function decodeFrame(symbols, century = 2000) {
   if (!Array.isArray(symbols) || symbols.length !== 20) {
     return { ok: false, error: '帧长度必须是 20' };
   }
@@ -140,7 +141,7 @@ export function decodeFrame(symbols, century = 2000) {
   };
 }
 
-export function secondEnvelope(symbol, invert) {
+function secondEnvelope(symbol, invert) {
   if (symbol === null) {
     return [{ t: 0, gain: invert ? 0 : 1 }];
   }
@@ -156,3 +157,15 @@ export function secondEnvelope(symbol, invert) {
     { t: width, gain: 1 },
   ];
 }
+
+globalThis.BPC = globalThis.BPC || {};
+globalThis.BPC.encode = {
+  beijingParts,
+  epochMsFromBeijing,
+  weekdayMon1,
+  encodeFrame,
+  encodeMinute,
+  decodeFrame,
+  secondEnvelope,
+};
+})();

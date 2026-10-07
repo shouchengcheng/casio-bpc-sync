@@ -1,12 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {
+import '../src/encode.js';
+
+const {
   beijingParts,
   decodeFrame,
   encodeFrame,
   encodeMinute,
   secondEnvelope,
-} from '../src/encode.js';
+} = globalThis.BPC.encode;
 
 function xorBits(symbols) {
   let x = 0;

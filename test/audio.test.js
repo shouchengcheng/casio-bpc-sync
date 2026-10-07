@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { audioWhen, upcomingSecondMarks } from '../src/audio.js';
+import '../src/audio.js';
+
+const { audioWhen, upcomingSecondMarks } = globalThis.BPC.audio;
 
 test('音频触发时刻扣除输出延迟和用户微调', () => {
   const when = audioWhen({

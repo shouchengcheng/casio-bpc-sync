@@ -1,10 +1,9 @@
-import { beijingParts, encodeFrame, secondEnvelope } from './encode.js';
-
+(function () {
 const HORIZON_MS = 120_000;
 const LEAD_SEC = 0.08;
 const EXTEND_MS = 30_000;
 
-export function audioWhen({
+function audioWhen({
   ctxCurrentTime,
   beijingNowMs,
   targetBeijingMs,
@@ -19,7 +18,7 @@ export function audioWhen({
   );
 }
 
-export function upcomingSecondMarks(beijingNowMs, horizonMs, scheduledUntilMs) {
+function upcomingSecondMarks(beijingNowMs, horizonMs, scheduledUntilMs) {
   const horizon = beijingNowMs + horizonMs;
   let mark = Math.ceil(beijingNowMs / 1000) * 1000;
   if (mark < scheduledUntilMs) mark = scheduledUntilMs;
@@ -39,7 +38,7 @@ function sameOptions(left, right) {
   );
 }
 
-export function createTransmitter() {
+function createTransmitter() {
   let ctx = null;
   let osc = null;
   let gain = null;
@@ -92,6 +91,7 @@ export function createTransmitter() {
         trimMs: options.trimMs,
       });
       if (when < ctx.currentTime + LEAD_SEC) continue;
+      const { beijingParts, encodeFrame, secondEnvelope } = globalThis.BPC.encode;
       const parts = beijingParts(mark);
       const frameSecond = parts.second - (parts.second % 20);
       const symbols = encodeFrame({ ...parts, second: frameSecond });
@@ -176,3 +176,7 @@ export function createTransmitter() {
     },
   };
 }
+
+globalThis.BPC = globalThis.BPC || {};
+globalThis.BPC.audio = { audioWhen, upcomingSecondMarks, createTransmitter };
+})();

@@ -1,11 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {
-  TIME_SOURCES,
-  offsetFromExchange,
-  pickBestSample,
-  syncClock,
-} from '../src/time.js';
+import '../src/time.js';
+
+const { TIME_SOURCES, offsetFromExchange, pickBestSample, syncClock } = globalThis.BPC.time;
 
 test('半个往返时延修正钟差', () => {
   const result = offsetFromExchange({
@@ -31,7 +28,7 @@ test('没有成功样本时返回空', () => {
   assert.equal(pickBestSample([{ ok: false, source: 'suning' }]), null);
 });
 
-test('三个时间源都能从样例响应里解析出纪元毫秒', () => {
+test('时间源都能从样例响应里解析出纪元毫秒', () => {
   const byId = Object.fromEntries(TIME_SOURCES.map((source) => [source.id, source]));
 
   assert.equal(
@@ -62,7 +59,7 @@ test('全部时间源失败时回退到电脑时钟', async () => {
   assert.equal(result.ok, false);
   assert.equal(result.offsetMs, 0);
   assert.equal(result.source, 'local');
-  assert.equal(result.samples.length, 3);
+  assert.equal(result.samples.length, TIME_SOURCES.length);
 });
 
 test('传入脚本回调时，苏宁不走会被跨域拦住的 fetch', async () => {
@@ -77,6 +74,23 @@ test('传入脚本回调时，苏宁不走会被跨域拦住的 fetch', async ()
     },
   );
   assert.equal(fetched, true);
+  assert.equal(result.ok, true);
+  assert.equal(result.source, 'suning');
+});
+
+test('直接打开文件时只走脚本对时，不发普通请求', async () => {
+  let fetched = false;
+  const result = await syncClock(
+    async () => {
+      fetched = true;
+      throw new Error('cors');
+    },
+    {
+      allowFetch: false,
+      loadJsonp: async () => ({ currentTime: 5_000 }),
+    },
+  );
+  assert.equal(fetched, false);
   assert.equal(result.ok, true);
   assert.equal(result.source, 'suning');
 });

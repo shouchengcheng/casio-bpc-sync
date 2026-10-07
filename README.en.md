@@ -8,15 +8,17 @@ A browser cannot emit 68.5 kHz. The page plays a 13.7 kHz carrier (or 17.125 kHz
 
 ## Open
 
-From this directory:
+Double-click `index.html`. A local server is not required.
+
+The page reads Suning time with a script tag and corrects the clock by half of the round trip. Browsers allow that script tag when the file is opened directly. If Suning fails and the page was opened from a local server, it also asks WorldTimeAPI and TimeAPI. If every source fails, the page uses the computer clock and marks the status in red.
+
+A local server is optional:
 
 ```bash
 python -m http.server 8765
 ```
 
-Open `http://127.0.0.1:8765/`. Do not open `index.html` as a file. Time requests are blocked on `file://`, and the page then falls back to the computer clock.
-
-On load the page asks Suning, WorldTimeAPI, and TimeAPI in order, keeps the sample with the shortest round trip, and corrects the clock by half of that delay. Suning is read with a script tag because a normal request is blocked by CORS. If all three fail, the page uses the computer clock and marks the status in red.
+Then open `http://127.0.0.1:8765/`.
 
 ## Set the watch
 

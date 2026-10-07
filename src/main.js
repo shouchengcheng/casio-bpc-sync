@@ -1,6 +1,7 @@
-import { beijingParts, decodeFrame, encodeFrame, encodeMinute, weekdayMon1 } from './encode.js';
-import { createTransmitter } from './audio.js';
-import { sourceLabel, syncClock } from './time.js';
+(function () {
+const { beijingParts, decodeFrame, encodeFrame, encodeMinute, weekdayMon1 } = globalThis.BPC.encode;
+const { createTransmitter } = globalThis.BPC.audio;
+const { sourceLabel, syncClock } = globalThis.BPC.time;
 
 const clock = {
   offsetMs: 0,
@@ -52,7 +53,7 @@ function currentFrameInput(now = beijingParts(beijingNowMs())) {
   };
 }
 
-export function checkFrame(nowMs = beijingNowMs()) {
+function checkFrame(nowMs = beijingNowMs()) {
   const input = currentFrameInput(beijingParts(nowMs));
   const decoded = decodeFrame(encodeFrame(input));
   const matched =
@@ -118,9 +119,6 @@ function render() {
   if (clock.syncing) {
     status.className = '';
     status.textContent = '正在向公网对时…';
-  } else if (location.protocol === 'file:') {
-    status.className = 'warn';
-    status.textContent = '当前是直接打开文件，浏览器会拦住对时。请按说明用本地网页服务打开。';
   } else if (clock.ok) {
     status.className = '';
     status.textContent = `时间来源：${sourceLabel(clock.source)}，钟差 ${formatOffset(clock.offsetMs)}，往返 ${Math.round(clock.rtt)} ms`;
@@ -170,7 +168,10 @@ async function resync() {
   render();
   $('resync').disabled = true;
   try {
-    const result = await syncClock(globalThis.fetch, { loadJsonp: loadSuning });
+    const result = await syncClock(globalThis.fetch, {
+      loadJsonp: loadSuning,
+      allowFetch: location.protocol !== 'file:',
+    });
     clock.ok = result.ok;
     clock.offsetMs = result.offsetMs;
     clock.source = result.source;
@@ -246,5 +247,4 @@ render();
 showSelfCheck();
 resync();
 setInterval(render, 200);
-
-export { clock, transmitter };
+})();

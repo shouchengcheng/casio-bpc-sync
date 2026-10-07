@@ -1,7 +1,9 @@
-export const TIME_SOURCES = [
+(function () {
+const TIME_SOURCES = [
   {
     id: 'suning',
     label: '苏宁',
+    mode: 'jsonp',
     url: 'https://f.m.suning.com/api/ct.do',
     parse(data) {
       const ms = Number(data.currentTime);
@@ -12,6 +14,7 @@ export const TIME_SOURCES = [
   {
     id: 'worldtimeapi',
     label: 'WorldTimeAPI',
+    mode: 'fetch',
     url: 'https://worldtimeapi.org/api/timezone/Asia/Shanghai',
     parse(data) {
       if (Number.isFinite(Number(data.unixtime))) return Number(data.unixtime) * 1000;
@@ -23,6 +26,7 @@ export const TIME_SOURCES = [
   {
     id: 'timeapi',
     label: 'TimeAPI',
+    mode: 'fetch',
     url: 'https://timeapi.io/api/Time/current/zone?timeZone=Asia/Shanghai',
     parse(data) {
       return parseShanghaiDateTime(data.dateTime);
@@ -30,7 +34,7 @@ export const TIME_SOURCES = [
   },
 ];
 
-export function offsetFromExchange({ sentAt, receivedAt, serverMs }) {
+function offsetFromExchange({ sentAt, receivedAt, serverMs }) {
   const rtt = receivedAt - sentAt;
   return {
     rtt,
@@ -38,7 +42,7 @@ export function offsetFromExchange({ sentAt, receivedAt, serverMs }) {
   };
 }
 
-export function pickBestSample(samples) {
+function pickBestSample(samples) {
   const ok = samples.filter((sample) => sample.ok);
   if (ok.length === 0) return null;
   return ok.reduce((best, sample) => (sample.rtt < best.rtt ? sample : best));
@@ -55,15 +59,18 @@ function parseShanghaiDateTime(dateTime) {
   return ms;
 }
 
-export async function syncClock(fetchImpl = globalThis.fetch, extras = {}) {
+async function syncClock(fetchImpl = globalThis.fetch, extras = {}) {
   const loadJsonp = extras.loadJsonp;
+  const allowFetch = extras.allowFetch !== false;
   const samples = [];
   for (const source of TIME_SOURCES) {
     const sentAt = Date.now();
     try {
       let data;
-      if (source.id === 'suning' && loadJsonp) {
+      if (source.mode === 'jsonp' && loadJsonp) {
         data = await loadJsonp(source.url);
+      } else if (!allowFetch) {
+        throw new Error('当前打开方式不能用普通请求对时');
       } else {
         const response = await fetchImpl(source.url, {
           cache: 'no-store',
@@ -98,7 +105,17 @@ export async function syncClock(fetchImpl = globalThis.fetch, extras = {}) {
   };
 }
 
-export function sourceLabel(id) {
+function sourceLabel(id) {
   if (id === 'local') return '电脑时钟';
   return TIME_SOURCES.find((source) => source.id === id)?.label ?? id;
 }
+
+globalThis.BPC = globalThis.BPC || {};
+globalThis.BPC.time = {
+  TIME_SOURCES,
+  offsetFromExchange,
+  pickBestSample,
+  syncClock,
+  sourceLabel,
+};
+})();
