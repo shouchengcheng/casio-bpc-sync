@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BPC 声卡授时</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #14170f;
+        --panel: #1d2216;
+        --ink: #f3f0e4;
+        --muted: #b7b39f;
+        --line: #343826;
+        --accent: #d6ff4a;
+        --warn: #ffb4a2;
+        --mark: #8d9280;
+        --q0: #3d6bff;
+        --q1: #e2b340;
+        --q2: #ef7d32;
+        --q3: #e24b4b;
+        --now: #d6ff4a;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font: 16px/1.5 "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      }
+      main { max-width: 760px; margin: 0 auto; padding: 28px 20px 48px; }
+      h1 { margin: 0 0 4px; font-size: 28px; letter-spacing: 0.02em; }
+      h2 { margin: 0 0 8px; font-size: 18px; }
+      p { margin: 0; }
+      .lead { color: var(--muted); margin-bottom: 20px; }
+      section {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 16px;
+        margin-bottom: 14px;
+      }
+      .clock {
+        font-family: Consolas, "Cascadia Mono", ui-monospace, monospace;
+        font-size: 56px;
+        letter-spacing: 0.04em;
+        font-variant-numeric: tabular-nums;
+      }
+      #beijing-date { color: var(--muted); margin-top: 4px; }
+      #sync-status { margin-top: 10px; }
+      #sync-status.warn { color: var(--warn); }
+      .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+      button, select, input[type="range"] { font: inherit; }
+      button {
+        background: var(--accent);
+        color: #1a1c10;
+        border: 0;
+        border-radius: 999px;
+        padding: 10px 18px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      button.secondary { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+      button:disabled { opacity: 0.5; cursor: wait; }
+      label { display: flex; flex-direction: column; gap: 6px; color: var(--muted); min-width: 180px; }
+      label.inline { flex-direction: row; align-items: center; min-width: 0; color: var(--ink); }
+      select {
+        background: var(--bg);
+        color: var(--ink);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 8px;
+      }
+      .frames { display: grid; gap: 8px; }
+      .frame { display: grid; grid-template-columns: 42px 1fr; gap: 8px; align-items: center; }
+      .frame-label { color: var(--muted); font-family: Consolas, monospace; }
+      .cells { display: grid; grid-template-columns: repeat(20, 1fr); gap: 3px; }
+      .cell {
+        height: 28px;
+        border-radius: 3px;
+        background: #10140c;
+        overflow: hidden;
+        border: 1px solid transparent;
+      }
+      .cell span { display: block; height: 100%; }
+      .cell.marker span { width: 100%; background: var(--mark); }
+      .cell.q0 span { background: var(--q0); }
+      .cell.q1 span { background: var(--q1); }
+      .cell.q2 span { background: var(--q2); }
+      .cell.q3 span { background: var(--q3); }
+      .cell.current { border-color: var(--now); }
+      .legend { color: var(--muted); margin-top: 10px; font-size: 14px; }
+      .swatch {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        margin: 0 4px 0 10px;
+        vertical-align: -1px;
+      }
+      ol { margin: 0; padding-left: 20px; }
+      li + li { margin-top: 6px; }
+      #check-result { min-height: 1.5em; color: var(--muted); }
+      #check-result.ok { color: var(--accent); }
+      #check-result.bad { color: var(--warn); }
+      #elapsed { font-family: Consolas, monospace; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>BPC 声卡授时</h1>
+      <p class="lead">电脑声卡发出 13.7 kHz 载波，有线耳机贴在表背，让卡西欧电波表收到北京时间。</p>
+
+      <section>
+        <div id="beijing-time" class="clock">--:--:--</div>
+        <div id="beijing-date"></div>
+        <p id="sync-status">正在向公网对时…</p>
+      </section>
+
+      <section>
+        <div class="row">
+          <button id="toggle" type="button">开始</button>
+          <button id="resync" class="secondary" type="button">重新对时</button>
+          <button id="self-check" class="secondary" type="button">自检</button>
+          <span id="elapsed"></span>
+        </div>
+        <p id="check-result"></p>
+      </section>
+
+      <section>
+        <h2>这一分钟的编码</h2>
+        <div id="frames" class="frames"></div>
+        <p class="legend">
+          <span class="swatch" style="background: var(--mark)"></span>帧标志
+          <span class="swatch" style="background: var(--q0)"></span>0
+          <span class="swatch" style="background: var(--q1)"></span>1
+          <span class="swatch" style="background: var(--q2)"></span>2
+          <span class="swatch" style="background: var(--q3)"></span>3
+          <span class="swatch" style="background: transparent; border: 1px solid var(--now)"></span>当前秒
+        </p>
+        <p id="invert-note" class="legend"></p>
+      </section>
+
+      <section>
+        <div class="row">
+          <label>载波频率
+            <select id="frequency">
+              <option value="13700" selected>13700 Hz</option>
+              <option value="17125">17125 Hz</option>
+            </select>
+          </label>
+          <label>波形
+            <select id="waveform">
+              <option value="sine" selected>正弦</option>
+              <option value="square">方波</option>
+            </select>
+          </label>
+          <label class="inline"><input id="invert" type="checkbox" />反相（开头发声）</label>
+        </div>
+        <label style="margin-top: 14px">延迟微调 <span id="trim-readout">0 ms（正值提前）</span>
+          <input id="trim" type="range" min="-300" max="300" step="10" value="0" />
+        </label>
+        <p id="latency" class="legend"></p>
+      </section>
+
+      <section>
+        <h2>怎么让手表收到</h2>
+        <ol>
+          <li>插上有线耳机。蓝牙耳机没有线圈磁场，收不到这个信号。</li>
+          <li>把系统音量开到最大，并确认没有静音、输出设备是这副耳机。</li>
+          <li>耳机喇叭贴住表背，手不要晃。</li>
+          <li>手表进入强制接收，出现接收图标后保持大约 3 到 8 分钟。按键位置因表款而异，以说明书为准。</li>
+          <li>若一直失败：换载波频率或波形，勾选反相，再把微调每次移动 20 毫秒重试。</li>
+        </ol>
+        <p class="legend" style="margin-top: 10px">13.7 kHz 接近人耳上限，听不太清也仍然在发射。</p>
+      </section>
+    </main>
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>
