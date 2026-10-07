@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BPC Sync</string>
+    <string name="lead">Play a 13.7 kHz carrier through wired headphones so a radio-controlled watch can receive China BPC.</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="resync">Resync</string>
+    <string name="self_check">Self-check</string>
+    <string name="volume_max">Max volume</string>
+    <string name="syncing">Syncing to network time…</string>
+    <string name="sync_ok">Source: %1$s, offset %2$s, round trip %3$d ms</string>
+    <string name="sync_failed">Time sync failed. Using the phone clock. Check the network and resync.</string>
+    <string name="source_suning">Suning</string>
+    <string name="source_local">phone clock</string>
+    <string name="self_check_ok">Self-check passed: %1$d-%2$02d-%3$02d %4$02d:%5$02d:%6$02d</string>
+    <string name="self_check_bad">Self-check failed.</string>
+    <string name="minute_title">This minute</string>
+    <string name="frequency">Carrier</string>
+    <string name="waveform">Waveform</string>
+    <string name="invert">Invert (sound at the start)</string>
+    <string name="invert_on">Invert is on: data seconds sound first, and frame markers stay silent.</string>
+    <string name="trim_value">Delay trim %1$d ms (positive is earlier)</string>
+    <string name="latency_off">Output latency is subtracted after you start.</string>
+    <string name="latency_on">Output latency subtracted: %1$d ms</string>
+    <string name="elapsed">Transmitting %1$02d:%2$02d</string>
+    <string name="wired_ok">Wired output: %1$s</string>
+    <string name="wired_named">Wired output: %1$s (%2$s)</string>
+    <string name="type_jack">3.5 mm</string>
+    <string name="type_headset">3.5 mm headset</string>
+    <string name="type_usb">USB-C</string>
+    <string name="bluetooth_warn">Bluetooth is connected. The watch cannot hear it. Use a 3.5 mm or USB-C wired headphone.</string>
+    <string name="speaker_warn">No wired headphone detected. Speaker output will not reach the watch.</string>
+    <string name="steps_title">How to set the watch</string>
+    <string name="steps">1. Confirm the status is not red.\n2. Plug in wired headphones. Bluetooth does not work.\n3. Tap Max volume and confirm the output is this headphone.\n4. Tap Start. 13.7 kHz is hard to hear, but it is still transmitting.\n5. Hold the speaker against the back of the watch.\n6. Start a forced receive and keep it there for 3 to 8 minutes.\n7. If it fails, change the carrier or waveform, turn on Invert, or move the trim by 20 ms.</string>
+    <string name="notification_channel">BPC transmission</string>
+    <string name="notification_title">BPC Sync is transmitting</string>
+    <string name="notification_text">Keep the headphone against the watch.</string>
+    <string name="audio_failed">Could not open audio output.</string>
+    <string-array name="weekdays">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </string-array>
+    <string-array name="waveforms">
+        <item>Sine</item>
+        <item>Square</item>
+    </string-array>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.BpcSync" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:statusBarColor">#14170F</item>
+        <item name="android:navigationBarColor">#14170F</item>
+        <item name="android:windowBackground">#14170F</item>
+        <item name="colorPrimary">#D6FF4A</item>
+        <item name="colorOnPrimary">#1A1C10</item>
+        <item name="colorSurface">#1D2216</item>
+        <item name="colorOnSurface">#F3F0E4</item>
+        <item name="android:textColor">#F3F0E4</item>
+    </style>
+</resources>

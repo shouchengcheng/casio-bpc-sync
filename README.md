@@ -24,6 +24,10 @@
 
 默认包络与真实 BPC 一致：数据秒开头静音 0.1 到 0.4 秒，帧标志整秒满幅。「反相」改成开头发声，帧标志整秒静音。
 
+## 安卓
+
+同一套信号也可以做成手机应用。直接下载安装包：[bpc-sync-1.0.0.apk](https://github.com/shouchengcheng/casio-bpc-sync/releases/download/v1.0.0/bpc-sync-1.0.0.apk)。手机同样要插有线耳机，蓝牙无效。源码和编译方式在 [`android/`](android/README.md)。
+
 ## 自检
 
 「自检」把当前这一帧编码后再解码，结果必须等于该帧起始的北京时间。编码测试：

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BPC 授时</string>
+    <string name="lead">有线耳机播放 13.7 kHz 载波，贴在表背，让电波表接收中国 BPC。</string>
+    <string name="start">开始</string>
+    <string name="stop">停止</string>
+    <string name="resync">重新对时</string>
+    <string name="self_check">自检</string>
+    <string name="volume_max">音量最大</string>
+    <string name="syncing">正在向公网对时…</string>
+    <string name="sync_ok">时间来源：%1$s，钟差 %2$s，往返 %3$d ms</string>
+    <string name="sync_failed">对时失败，正在使用手机时钟。请检查网络后重新对时。</string>
+    <string name="source_suning">苏宁</string>
+    <string name="source_local">手机时钟</string>
+    <string name="self_check_ok">自检通过：%1$d-%2$02d-%3$02d %4$02d:%5$02d:%6$02d</string>
+    <string name="self_check_bad">自检失败。</string>
+    <string name="minute_title">这一分钟的编码</string>
+    <string name="frequency">载波频率</string>
+    <string name="waveform">波形</string>
+    <string name="invert">反相（开头发声）</string>
+    <string name="invert_on">反相已打开：数据秒改为开头发声，帧标志整秒静音。</string>
+    <string name="trim_value">延迟微调 %1$d ms（正值提前）</string>
+    <string name="latency_off">开始后会自动扣除声卡输出延迟。</string>
+    <string name="latency_on">已扣除声卡输出延迟 %1$d ms</string>
+    <string name="elapsed">已发射 %1$02d:%2$02d</string>
+    <string name="wired_ok">有线输出：%1$s</string>
+    <string name="wired_named">有线输出：%1$s（%2$s）</string>
+    <string name="type_jack">3.5 mm</string>
+    <string name="type_headset">3.5 mm 耳麦</string>
+    <string name="type_usb">USB-C</string>
+    <string name="bluetooth_warn">当前是蓝牙输出，手表收不到。请改用 3.5 mm 或 USB-C 有线耳机。</string>
+    <string name="speaker_warn">没有检测到有线耳机。外放声音到不了手表。</string>
+    <string name="steps_title">怎么让手表收到</string>
+    <string name="steps">1. 确认状态不是红色。\n2. 插上有线耳机。蓝牙没有这条磁场通路。\n3. 点「音量最大」，并确认输出设备是这副耳机。\n4. 点「开始」。13.7 kHz 接近人耳上限，听不清也仍然在发射。\n5. 耳机喇叭贴住表背，不要移动。\n6. 手表进入强制接收，出现接收图标后保持大约 3 到 8 分钟。\n7. 若失败：换载波或波形，勾选反相，或把微调每次移动 20 毫秒。</string>
+    <string name="notification_channel">BPC 发射</string>
+    <string name="notification_title">正在发射 BPC</string>
+    <string name="notification_text">请把耳机贴在表背。</string>
+    <string name="audio_failed">无法打开音频输出。</string>
+    <string-array name="weekdays">
+        <item>星期一</item>
+        <item>星期二</item>
+        <item>星期三</item>
+        <item>星期四</item>
+        <item>星期五</item>
+        <item>星期六</item>
+        <item>星期日</item>
+    </string-array>
+    <string-array name="waveforms">
+        <item>正弦</item>
+        <item>方波</item>
+    </string-array>
+</resources>

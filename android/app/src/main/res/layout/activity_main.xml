@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#14170F"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/app_name"
+                android:textColor="#F3F0E4"
+                android:textSize="28sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/language"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="EN"
+                android:textColor="#F3F0E4"
+                app:strokeColor="#343826" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/lead"
+            android:textColor="#B7B39F" />
+
+        <TextView
+            android:id="@+id/beijing_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="--:--:--"
+            android:textColor="#F3F0E4"
+            android:textSize="48sp" />
+
+        <TextView
+            android:id="@+id/beijing_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#B7B39F" />
+
+        <TextView
+            android:id="@+id/sync_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/syncing"
+            android:textColor="#B7B39F" />
+
+        <TextView
+            android:id="@+id/headphone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="#B7B39F" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/toggle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/start"
+            android:textColor="#1A1C10"
+            app:backgroundTint="#D6FF4A" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/resync"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="@string/resync"
+                android:textColor="#F3F0E4"
+                app:strokeColor="#343826" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/self_check"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/self_check"
+                android:textColor="#F3F0E4"
+                app:strokeColor="#343826" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/volume"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/volume_max"
+            android:textColor="#F3F0E4"
+            app:strokeColor="#343826" />
+
+        <TextView
+            android:id="@+id/elapsed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="monospace"
+            android:textColor="#F3F0E4" />
+
+        <TextView
+            android:id="@+id/check_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="#B7B39F" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/minute_title"
+            android:textColor="#F3F0E4"
+            android:textSize="18sp" />
+
+        <com.shouchengcheng.bpcsync.FrameBarsView
+            android:id="@+id/bars"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/frequency"
+            android:textColor="#B7B39F" />
+
+        <Spinner
+            android:id="@+id/frequency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:popupBackground="#1D2216" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/waveform"
+            android:textColor="#B7B39F" />
+
+        <Spinner
+            android:id="@+id/waveform"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:popupBackground="#1D2216" />
+
+        <CheckBox
+            android:id="@+id/invert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/invert"
+            android:textColor="#F3F0E4" />
+
+        <TextView
+            android:id="@+id/invert_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#B7B39F" />
+
+        <TextView
+            android:id="@+id/trim_readout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="#B7B39F" />
+
+        <SeekBar
+            android:id="@+id/trim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="60"
+            android:progress="30"
+            android:progressTint="#D6FF4A"
+            android:thumbTint="#D6FF4A" />
+
+        <TextView
+            android:id="@+id/latency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/latency_off"
+            android:textColor="#B7B39F" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/steps_title"
+            android:textColor="#F3F0E4"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/steps"
+            android:textColor="#F3F0E4" />
+    </LinearLayout>
+</ScrollView>

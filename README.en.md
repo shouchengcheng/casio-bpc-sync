@@ -24,6 +24,10 @@ The page syncs to Suning time automatically and corrects the clock by half of th
 
 The default envelope matches real BPC: each data second starts with 0.1 to 0.4 seconds of silence, and frame markers stay at full amplitude for the whole second. Invert sounds at the start of each data second and silences the frame markers.
 
+## Android
+
+The same signal is also an Android app. Download [bpc-sync-1.0.0.apk](https://github.com/shouchengcheng/casio-bpc-sync/releases/download/v1.0.0/bpc-sync-1.0.0.apk). The phone still needs wired headphones; Bluetooth does not work. Source and build steps are in [`android/`](android/README.md).
+
 ## Check
 
 Self-check encodes the current frame and decodes it again. The result must equal Beijing time at the start of that frame. Encoding tests:
